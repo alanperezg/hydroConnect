@@ -3,9 +3,9 @@ let mysql = require('mysql');
 
 function sqlQuery(query, values, callback){
     var connection = mysql.createConnection({
-    host     : '167.99.6.143',
-    user     : 'hydroconnect',
-    password : 'hydroconnectPassword123.',
+    host     : '127.0.0.1',
+    user     : 'root',
+    password : 'Cocacola123.',
     database : 'hydroconnectApp'
     });
     
