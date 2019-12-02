@@ -6,7 +6,7 @@ let SensorDataController = require('./functions/SensorDataController');
 
 let settings = { port:1883 }
 let server = new mosca.Server(settings);
-let client  = mqtt.connect('mqtt://192.168.100.208');
+let client  = mqtt.connect('mqtt://157.245.233.250');
 
 server.on('ready', function(){
     client.subscribe('connectionCheckRequest');

@@ -5,7 +5,7 @@ let mqtt = require('mqtt');
 let DeviceController = require('./functions/DeviceController');
 let jwt = require('jsonwebtoken');
 
-let client  = mqtt.connect('mqtt://167.99.6.143');
+let client  = mqtt.connect('mqtt://157.245.233.250');
 
 let linkRequests = {};
 client.on('connect', function () {
