@@ -1,41 +1,43 @@
 let mosca = require('mosca');
-let mqtt = require('mqtt')
+let mqtt = require('mqtt');
+
+let DeviceController = require('./functions/DeviceController');
+let SensorDataController = require('./functions/SensorDataController');
 
 let settings = { port:1883 }
 let server = new mosca.Server(settings);
-let client  = mqtt.connect('mqtt://127.0.0.1');
+let client  = mqtt.connect('mqtt://192.168.100.208');
 
 server.on('ready', function(){
     client.subscribe('connectionCheckRequest');
     client.subscribe('linkRequest');
+    client.subscribe('linkResponse');
     client.subscribe('sensedData');
+});
+
+server.on('clientConnected', (client) => {
+    console.log(client.id);
+    DeviceController.updateConnectionStatus(client.id, 1);
+});
+server.on('clientDisconnected', function(client) {
+    DeviceController.updateConnectionStatus(client.id, 0);
 });
 
 client.on('message', function (topic, message) {
     if(topic == "connectionCheckRequest"){
         let json = JSON.parse(message.toString());
-        let device = json.device;
-        let DeviceController = require('./functions/DeviceController');
-        /*DeviceController.checkDeviceExist(device, (response) => {
+        let deviceId = json.device;
+        DeviceController.checkDeviceExist(deviceId, (response) => {
             if(response){
-                client.publish("connectionCheckResponse", JSON.stringify({device , connection: true}));
-                console.log("Se conecto");
+                client.publish("connectionCheckResponse", JSON.stringify({deviceId , connection: true}));
             }else{
-                client.publish("connectionCheckResponse", JSON.stringify({device , connection: false}));
-                console.log("No se conecto");
+                client.publish("connectionCheckResponse", JSON.stringify({deviceId , connection: false}));
             }
-        });*/
-        client.publish("connectionCheckResponse", JSON.stringify({device , connection: true}));
-    }else if(topic == "linkRequest"){
-        let json = JSON.parse(message.toString());
-        let device = json.device;
-        console.log("linkRequest");
-        client.publish("connectionCheckResponse", JSON.stringify({device , linked: true}));
-
+        });
     }else if(topic == "sensedData"){
-        let SensorDataController = require('./functions/SensorDataController');
         let json = JSON.parse(message.toString());
-        console.log(json);
-        //SensorDataController.saveData(json)
+        SensorDataController.saveData(json)
+    }else if(topic == "linkResponse"){
+        console.log(message.toString());
     }
 });
