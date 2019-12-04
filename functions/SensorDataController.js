@@ -59,7 +59,7 @@ class SensorDataController{
 
         promises.push(new Promise((resolve, reject)=>{
             sqlQuery(`SELECT ROUND(AVG(sd.temp),2) as 'temp', ROUND(AVG(sd.ph),2) as 'ph', ROUND(AVG(sd.ce),2) as 'ce', ROUND(AVG(sd.lux),2) as 'lux', ROUND(AVG(sd.waterLevel),2) as 'waterLevel', DATE_FORMAT(sd.time, "%Y-%m-%d %H:%i:00")  as 'roundTime'
-            FROM SensorData as sd INNER JOIN User_Device as ud ON sd.Device_id = ud.Device_id WHERE ud.id = ? GROUP BY (roundTime) limit 24`, [id], (err, rows, fields) => {
+            FROM SensorData as sd INNER JOIN User_Device as ud ON sd.Device_id = ud.Device_id WHERE ud.id = ? GROUP BY (roundTime) limit 300`, [id], (err, rows, fields) => {
                 let tempProm = 0;
                 let phProm = 0;
                 let ceProm = 0;

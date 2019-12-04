@@ -15,7 +15,7 @@ client.on('connect', function () {
 client.on('message', function (topic, message) {
     if(topic == "linkRequest"){
         let expire = new Date();
-        expire.setSeconds(expire.getSeconds() + 10);
+        expire.setSeconds(expire.getSeconds() + 2);
         let deviceId = JSON.parse(message.toString()).deviceId;
         linkRequests[deviceId] = expire;
     }

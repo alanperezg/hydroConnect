@@ -50,7 +50,7 @@ class DeviceController{
 
     static deleteDevice(deviceId, callback){
         sqlQuery(`DELETE FROM User_Device WHERE id = ?`, [deviceId], (err, rows, fields) => {
-            callback({status: 200, deleted: true});
+            callback({status: 200, res:{deleted: true}});
         });
     }
 }
